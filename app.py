@@ -3,8 +3,14 @@ from pathlib import Path
 from musicfile import MusicFile
 import eyed3
 
-dropFolderPath = "C:\\dev\\musicOrganizer\\drop"
-destinationPath = "C:\\music"
+parser = argparse.ArgumentParser()
+parser.add_argument("--source", required=True)
+parser.add_argument("--destination", required=True)
+
+args = parser.parse_args()
+
+dropFolderPath = args.source
+destinationPath = args.destination
 
 def read_music_file(file_name):
     full_file_name = os.path.join(dropFolderPath, file_name)
@@ -26,16 +32,6 @@ def organize_music_file(music_file):
     path = os.path.join(destinationPath, music_file.artist_name, music_file.album_name)
     create_directory(path)
     shutil.copy(music_file.full_file_name, path)
-
-parser = argparse.ArgumentParser()
-parser.add_argument("--source", required=True)
-parser.add_argument("--destination", required=True)
-
-
-args = parser.parse_args()
-
-dropFolderPath = args.source
-destinationPath = args.destination
 
 files = os.listdir(dropFolderPath)
 
