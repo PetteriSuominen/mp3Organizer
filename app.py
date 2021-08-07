@@ -4,6 +4,7 @@ from musicfile import MusicFile
 import eyed3
 
 dropFolderPath = "C:\\dev\\musicOrganizer\\drop"
+destinationPath = "C:\\music"
 
 def read_music_file(file_name):
     full_file_name = os.path.join(dropFolderPath, file_name)
@@ -22,25 +23,23 @@ def create_directory(path):
     Path(path).mkdir(parents=True, exist_ok=True)
 
 def organize_music_file(music_file):
-    path = os.path.join("C:\\dev\\musicOrganizer", music_File.artist_name, music_File.album_name)
+    path = os.path.join(destinationPath, music_file.artist_name, music_file.album_name)
     create_directory(path)
-    shutil.copy(music_File.full_file_name, path)
+    shutil.copy(music_file.full_file_name, path)
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-s", "--Source", help = "Source location where files are located", required=True)
+parser.add_argument("--source", required=True)
+parser.add_argument("--destination", required=True)
+
 
 args = parser.parse_args()
 
-if args.Source:
-    dropFolderPath = args.Source
-
+dropFolderPath = args.source
+destinationPath = args.destination
 
 files = os.listdir(dropFolderPath)
 
-for file_name in files:
-    if file_name == "ReadMe.md":
-        continue
-    
+for file_name in files:    
     print("Handling " + file_name)
     music_File = read_music_file(file_name)
     if music_File is not None:
